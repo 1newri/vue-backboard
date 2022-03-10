@@ -1,5 +1,5 @@
 server:
-  port: 8082
+  port: 8081
 
 spring:
   h2:
@@ -8,6 +8,8 @@ spring:
       settings:
         web-allow-others: true
       path: /h2-console
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 
   jpa:
     hibernate:
