@@ -4,7 +4,9 @@ import com.example.vuebackboard.entity.BoardEntity;
 import com.example.vuebackboard.entity.dto.BoardDto;
 import com.example.vuebackboard.model.Header;
 import com.example.vuebackboard.model.Pagination;
+import com.example.vuebackboard.model.SearchCondition;
 import com.example.vuebackboard.repository.BoardRepository;
+import com.example.vuebackboard.repository.BoardRepositoryCustom;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +22,14 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
 
+    private final BoardRepositoryCustom boardRepositoryCustom;
+
     /* 게시글 목록 가져오기 */
-    public Header<List<BoardDto>> getBoardList(Pageable pageable) {
+    public Header<List<BoardDto>> getBoardList(Pageable pageable, SearchCondition searchCondition) {
         ArrayList<BoardDto> dtos = new ArrayList<>();
-        Page<BoardEntity> boardEntities = boardRepository.findAllByOrderByIdxDesc(pageable);
+        //Page<BoardEntity> boardEntities = boardRepository.findAllByOrderByIdxDesc(pageable);
         //List<BoardEntity> boardEntities = boardRepository.findAll();
+        Page<BoardEntity> boardEntities = boardRepositoryCustom.findAllBySearchCondition(pageable, searchCondition);
         boardEntities.forEach(entity -> {
             dtos.add(BoardDto.builder()
                     .idx(entity.getIdx())
